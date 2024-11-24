@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: project-ingress
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx 
+  rules:
+  - host: project.local
+    http:
+      paths:
+      # Route for frontend
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service # frontend Service name
+            port:
+              number: 5001 #  frontend Service port
+      # Route for backend
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-service #  backend Service name
+            port:
+              number: 5000 #  backend Service port
